@@ -1,13 +1,6 @@
 #ifndef PRINTOUT_H_INCLUDED
 #define PRINTOUT_H_INCLUDED
 
-#include <string>
-#include <vector>
-#include <unistd.h>
-
-#include "misc.h"
-#include "nodeinfo.h"
-
 enum
 {
     SPEEDTEST_ERROR_UNDEFINED = -13,
@@ -28,10 +21,12 @@ enum
 
 enum
 {
-    SPEEDTEST_MESSAGE_WELCOME = 1,
-    SPEEDTEST_MESSAGE_FOUNDVMESS,
+    SPEEDTEST_MESSAGE_FOUNDVMESS = 1,
     SPEEDTEST_MESSAGE_FOUNDSS,
     SPEEDTEST_MESSAGE_FOUNDSSR,
+    SPEEDTEST_MESSAGE_FOUNDTROJAN,
+    SPEEDTEST_MESSAGE_FOUNDSNELL,
+    SPEEDTEST_MESSAGE_WELCOME,
     SPEEDTEST_MESSAGE_FOUNDSUB,
     SPEEDTEST_MESSAGE_GOTSERVER,
     SPEEDTEST_MESSAGE_STARTPING,
@@ -63,6 +58,8 @@ enum
     SPEEDTEST_MESSAGE_FOUNDSSTAP,
     SPEEDTEST_MESSAGE_FOUNDNETCH,
     SPEEDTEST_MESSAGE_FOUNDHTTP,
+    SPEEDTEST_MESSAGE_STARTNAT,
+    SPEEDTEST_MESSAGE_GOTNAT,
     SPEEDTEST_MESSAGE_EOF
 };
 
@@ -71,9 +68,7 @@ enum
 #define V2RAY_DEFAULT_GROUP "V2RayProvider"
 #define SOCKS_DEFAULT_GROUP "SocksProvider"
 #define HTTP_DEFAULT_GROUP "HTTPProvider"
-
-void printMsg(int index, nodeInfo *node, bool rpcmode);
-void printMsgWithDict(int index, bool rpcmode, std::vector<std::string> dict, std::vector<std::string> trans);
-void printMsgDirect(int index, bool rpcmode);
+#define TROJAN_DEFAULT_GROUP "TrojanProvider"
+#define SNELL_DEFAULT_GROUP "SnellProvider"
 
 #endif // PRINTOUT_H_INCLUDED
