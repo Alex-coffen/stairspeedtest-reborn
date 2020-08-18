@@ -379,7 +379,7 @@ int perform_test(nodeInfo &node, std::string localaddr, int localport, std::stri
         running = still_running;
         writeLog(LOG_TYPE_FILEDL, "Running threads: " + std::to_string(running) + ", total received bytes: " + std::to_string(transferred_bytes) \
                  + ", current received bytes: " + std::to_string(this_bytes) + ".");
-        if(!running || this_bytes == 0)
+        if(!running || (transferred_bytes != 0 && this_bytes == 0))
             break;
         draw_progress_dl(i, this_bytes);
     }
