@@ -359,7 +359,7 @@ int perform_test(nodeInfo &node, std::string localaddr, int localport, std::stri
 
     writeLog(LOG_TYPE_FILEDL, "All threads launched. Start accumulating data.");
     auto start = steady_clock::now();
-    int transferred_bytes = 0, last_bytes = 0, this_bytes = 0, cur_recv_bytes = 0, max_speed = 0, min_speed = 100000000;
+    int transferred_bytes = 0, last_bytes = 0, this_bytes = 0, cur_recv_bytes = 0, max_speed = 0;
     for(i = 1; i < 21; i++)
     {
         sleep(500); //accumulate data
@@ -371,7 +371,6 @@ int perform_test(nodeInfo &node, std::string localaddr, int localport, std::stri
         if(i % 2 == 0)
         {
             max_speed = std::max(max_speed, (this_bytes + last_bytes) / 2); //pick 2 speed point and get average before calculating max speed
-            min_speed = std::min(min_speed, (this_bytes + last_bytes) / 2);
         }
         else
         {
@@ -380,7 +379,7 @@ int perform_test(nodeInfo &node, std::string localaddr, int localport, std::stri
         running = still_running;
         writeLog(LOG_TYPE_FILEDL, "Running threads: " + std::to_string(running) + ", total received bytes: " + std::to_string(transferred_bytes) \
                  + ", current received bytes: " + std::to_string(this_bytes) + ".");
-        if(!running)
+        if(!running || this_bytes == 0)
             break;
         draw_progress_dl(i, this_bytes);
     }
@@ -397,7 +396,7 @@ int perform_test(nodeInfo &node, std::string localaddr, int localport, std::stri
     auto duration = duration_cast<milliseconds>(end - start);
     int deltatime = duration.count() + 1;//add 1 to prevent some error
     node.totalRecvBytes = cur_recv_bytes;
-    node.avgSpeed = speedCalc(min_speed);
+    node.avgSpeed = speedCalc(cur_recv_bytes * 1000.0 / deltatime);
     node.maxSpeed = speedCalc(max_speed);
     if(node.avgSpeed == "0.00B")
     {
